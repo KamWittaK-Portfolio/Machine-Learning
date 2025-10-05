@@ -4,8 +4,8 @@ import pandas as pd
 import joblib
 
 # Import model and scalar
-model = joblib.load("insurance_model.pkl")
-scalar = joblib.load("scaler.pkl")
+model = joblib.load("Linear Regression/model/insurance_model.pkl")
+scalar = joblib.load("Linear Regression/model/scaler.pkl")
 
 # Initialize FastAPI app
 app = FastAPI(
