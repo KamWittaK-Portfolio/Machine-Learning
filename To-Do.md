@@ -1,4 +1,4 @@
-## 🧩 **Level 1: Foundations (Easy – Core Concepts)**
+## 🧩 **Level 1: Foundations (Easy – Core Concepts)**  
 
 Focus: basic supervised learning, metrics, and overfitting intuition.
 
