@@ -6,7 +6,7 @@ Focus: basic supervised learning, metrics, and overfitting intuition.
 
    * Concepts: gradient descent, loss functions (MSE), bias-variance.
 
-2. **Logistic Regression** — classification version of linear regression.
+2. ~~**Logistic Regression**~~ — classification version of linear regression.
 
    * Concepts: sigmoid, cross-entropy loss, decision boundaries.
 
