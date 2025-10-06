@@ -1,6 +1,7 @@
-from src.steps.ingest import load_data
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# tests/test_ingest.py
+from src.steps.ingest import load_data
 import pandas as pd
 
 def test_ingest_schema():
