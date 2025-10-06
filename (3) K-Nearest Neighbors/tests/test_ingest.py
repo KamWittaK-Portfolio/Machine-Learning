@@ -3,7 +3,7 @@ import pandas as pd
 
 def test_ingest_schema():
     # Example: replace with your actual ingest function or load CSV
-    data = pd.read_csv("data/your_dataset.csv")
+    data = pd.read_csv("data/KNNAlgorithmDataset.csv")
 
     # Check basic sanity
     assert not data.empty, "❌ DataFrame is empty."

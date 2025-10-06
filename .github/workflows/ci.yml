@@ -30,6 +30,11 @@ jobs:
           zenml stack register ci_stack -a default -o default -e mlflow_tracker --set
 
       - name: Run unit and integration tests
+        working-directory: "(3) K-Nearest Neighbors"
+        env:
+          URL: ${{ secrets.URL }}
+          KEY: ${{ secrets.KEY }}
         run: |
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
+
 
