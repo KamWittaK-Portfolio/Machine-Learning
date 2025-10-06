@@ -1,8 +1,9 @@
-fastapi==0.118.0
-joblib==1.4.2
-joblib==1.5.2
-pandas==2.3.3
-pydantic==2.11.10
-python-dotenv==1.1.1
-SQLAlchemy==2.0.43
-zenml==0.90.0
+fastapi
+joblib
+pandas
+pydantic
+python-dotenv
+SQLAlchemy
+zenml
+zenml[server]
+supabase
