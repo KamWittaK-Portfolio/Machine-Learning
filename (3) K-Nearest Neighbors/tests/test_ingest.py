@@ -1,9 +1,11 @@
+from src.steps.ingest import load_data
+
 # tests/test_ingest.py
 import pandas as pd
 
 def test_ingest_schema():
     # Example: replace with your actual ingest function or load CSV
-    data = pd.read_csv("data/KNNAlgorithmDataset.csv")
+    data = load_data()
 
     # Check basic sanity
     assert not data.empty, "❌ DataFrame is empty."
