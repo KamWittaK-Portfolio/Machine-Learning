@@ -2,9 +2,9 @@ name: CI - Development Branch Validation
 
 on:
   push:
-    branches: [ dev ]   # Triggers when code is merged into dev
+    branches: [ Dev ]   # Triggers when code is merged into dev
   pull_request:
-    branches: [ dev ]   # Optional: also runs on PRs targeting dev
+    branches: [ Dev ]   # Optional: also runs on PRs targeting dev
 
 
   workflow_dispatch:     # Manual trigger
