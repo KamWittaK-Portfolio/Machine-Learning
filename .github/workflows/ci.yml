@@ -32,5 +32,5 @@ jobs:
       - name: Run unit and integration tests
         run: |
           cd "(3) K-Nearest Neighbors"
-          pytest "tests/test_ingest.py --maxfail=1 --disable-warnings -q
+          pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
 
