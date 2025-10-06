@@ -23,6 +23,10 @@ jobs:
           python-version: "3.12.4"
 
       - name: Install dependencies
+        env:
+          URL: ${{ secrets.URL }}
+          KEY: ${{ secrets.KEY }}
         run: |
-          python -c "print('hello world')"
+          pip install python-dotenv
+          python test.py
           
