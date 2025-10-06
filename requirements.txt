@@ -6,4 +6,4 @@ python-dotenv
 SQLAlchemy
 zenml
 zenml[server]
-pytest
+supabase
