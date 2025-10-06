@@ -7,3 +7,4 @@ SQLAlchemy
 zenml
 zenml[server]
 supabase
+pytest
