@@ -23,5 +23,8 @@ def load_data() -> pd.DataFrame:
     response: Any = supabase.table("KNNAlgorithmDataset1").select("*").execute()
     df_supabase = pd.DataFrame(response.data)
 
+    print(len(response.data))
+    print(response.data[:5])
+
     # Combine CSV and Supabase data
     return pd.concat([df_csv, df_supabase], ignore_index=True)
