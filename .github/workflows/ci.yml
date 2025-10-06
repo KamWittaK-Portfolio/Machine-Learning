@@ -28,5 +28,5 @@ jobs:
           KEY: ${{ secrets.KEY }}
         run: |
           pip install python-dotenv
-          python test.py
+          python workflows/test.py
           
