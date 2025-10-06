@@ -27,9 +27,10 @@ jobs:
         run: |
           zenml init
           zenml experiment-tracker register mlflow_tracker --flavor=mlflow
-          zenml stack register ci_stack -a default -o default -d default -e mlflow_tracker --set
+          zenml stack register ci_stack -a default -o default -e mlflow_tracker --set
 
       - name: Run unit and integration tests
         run: |
+          cd "(3) K-Nearest Neighbors"
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
 
