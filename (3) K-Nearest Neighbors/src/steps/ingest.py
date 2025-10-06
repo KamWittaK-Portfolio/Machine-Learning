@@ -13,8 +13,8 @@ def load_data() -> pd.DataFrame:
     df_csv = pd.read_csv("data/KNNAlgorithmDataset.csv")
     
     # Load environment variables
-    URL: str = os.getenv("url", "")
-    KEY: str = os.getenv("key", "")
+    URL: str = os.getenv("URL", "")
+    KEY: str = os.getenv("KEY", "")
 
     # Create Supabase client
     supabase: Client = create_client(URL, KEY)
