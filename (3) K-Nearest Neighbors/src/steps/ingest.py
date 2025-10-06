@@ -16,11 +16,6 @@ def load_data() -> pd.DataFrame:
     URL: str = os.getenv("URL", "")
     KEY: str = os.getenv("KEY", "")
 
-    if URL == "https://khlsxzricbhxlpokbdvh.supabase.co":
-        print("yes")
-    else:
-        print("No")
-
     # Create Supabase client
     supabase: Client = create_client(URL, KEY)
 

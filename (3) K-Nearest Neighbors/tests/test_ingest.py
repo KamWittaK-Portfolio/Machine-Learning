@@ -19,7 +19,7 @@ def test_ingest_schema():
         "area_se", "smoothness_se", "compactness_se", "concavity_se", "concave points_se",
         "symmetry_se", "fractal_dimension_se", "radius_worst", "texture_worst", "perimeter_worst",
         "area_worst", "smoothness_worst", "compactness_worst", "concavity_worst",
-        "concave points_worst", "symmetry_worst", "fractal_dimension_worst", "Unnamed: 32"
+        "concave points_worst", "symmetry_worst", "fractal_dimension_worst"
     ]
 
     assert list(data.columns) == expected_columns, "❌ Columns do not match expected schema."
