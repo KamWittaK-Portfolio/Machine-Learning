@@ -6,4 +6,5 @@ load_dotenv()  # load from .env if available
 
 url = os.getenv("URL")
 
-print(f"URL: {url}")
+if url == "https://khlsxzricbhxlpokbdvh.supabase.co":
+    print("yes")
