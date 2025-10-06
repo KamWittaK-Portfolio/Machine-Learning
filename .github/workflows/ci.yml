@@ -5,8 +5,6 @@ on:
     branches: [ Dev ]   # Triggers when code is merged into dev
   pull_request:
     branches: [ Dev ]   # Optional: also runs on PRs targeting dev
-
-
   workflow_dispatch:     # Manual trigger
 
 jobs:
@@ -23,10 +21,22 @@ jobs:
           python-version: "3.12.4"
 
       - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Initialize ZenML repo
+        run: |
+          zenml init
+          zenml experiment-tracker register mlflow_tracker --flavor=mlflow
+          zenml stack register ci_stack -a default -o default -e mlflow_tracker --set
+
+      - name: Run unit and integration tests
+        working-directory: "(3) K-Nearest Neighbors"
         env:
           URL: ${{ secrets.URL }}
           KEY: ${{ secrets.KEY }}
         run: |
-          pip install python-dotenv
-          python test.py
-          
+          pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
+
+
