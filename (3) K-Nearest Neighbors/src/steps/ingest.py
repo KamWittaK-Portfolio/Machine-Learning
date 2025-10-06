@@ -16,6 +16,9 @@ def load_data() -> pd.DataFrame:
     URL: str = os.getenv("url", "")
     KEY: str = os.getenv("key", "")
 
+    if not KEY:
+        print("No KEY")        
+
     # Create Supabase client
     supabase: Client = create_client(URL, KEY)
 
