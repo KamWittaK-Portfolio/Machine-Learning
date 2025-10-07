@@ -59,7 +59,7 @@ jobs:
           zenml stack register ci_stack -a Supabase -o default -e mlflow_tracker --set
 
           # Install integrations
-          zenml integration install mlflow s3
+          zenml integration install mlflow s3 -y
 
       
 
