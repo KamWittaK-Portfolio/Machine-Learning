@@ -2,9 +2,9 @@ name: CI - Development Branch Validation
 
 on:
   push:
-    branches: [ Dev ]   # Triggers when code is merged into dev
+    branches: [ Dev ]   # Trigger when code is merged into Dev
   pull_request:
-    branches: [ Dev ]   # Optional: also runs on PRs targeting dev
+    branches: [ Dev ]   # Optional: also runs on PRs targeting Dev
   workflow_dispatch:     # Manual trigger
 
 jobs:
@@ -24,41 +24,68 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # Install ZenML integrations here so they exist before registration
+          zenml integration install mlflow s3 -y
 
-      - name: Initialize ZenML repo
+      - name: Initialize and Configure ZenML
         working-directory: "(3) K-Nearest Neighbors"
         env:
           ARTIFACT_PATH: ${{ vars.ARTIFACT_PATH }}
           TRACKER_URL: ${{ vars.TRACKER_URL }}
           TRACKER_USER: ${{ vars.TRACKER_USER }}
+          DB_URL: ${{ vars.DB_URL }}
 
           ARTIFACT_KEY: ${{ secrets.ARTIFACT_KEY }}
           ARTIFACT_SECRET: ${{ secrets.ARTIFACT_SECRET }}
           TRACKER_PASSWORD: ${{ secrets.TRACKER_PASSWORD }}
           TRACKER_TOKEN: ${{ secrets.TRACKER_TOKEN }}
+          DB_KEY: ${{ secrets.DB_KEY }}
 
+          PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
+
+        run: |
+          echo "🔧 Initializing ZenML repository..."
+          zenml init
+
+          echo "🔐 Creating ZenML secrets..."
+          zenml secret create artifact_secrets \
+            --aws_access_key_id="$ARTIFACT_KEY" \
+            --aws_secret_access_key="$ARTIFACT_SECRET"
+
+          zenml secret create mlflow_secret \
+            --username="$TRACKER_USER" \
+            --password="$TRACKER_PASSWORD"
+
+          echo "🗄️ Registering ZenML components..."
+          zenml artifact-store register Supabase \
+            --flavor=s3 \
+            --path="$ARTIFACT_PATH" \
+            --authentication_secret=artifact_secrets \
+            --overwrite
+
+          zenml experiment-tracker register mlflow_tracker \
+            --flavor=mlflow \
+            --authentication_secret=mlflow_secret \
+            --overwrite
+
+          echo "🧩 Registering ZenML stack..."
+          zenml stack register ci_stack \
+            -a Supabase \
+            -o default \
+            -e mlflow_tracker \
+            --set \
+            --overwrite
+
+      - name: Run Tests and Training
+        working-directory: "(3) K-Nearest Neighbors"
+        env:
           DB_URL: ${{ vars.DB_URL }}
           DB_KEY: ${{ secrets.DB_KEY }}
           PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
         run: |
-          zenml init
-
-          # Create secrets
-          zenml secret create artifact_secrets --aws_access_key_id="$ARTIFACT_KEY" --aws_secret_access_key="$ARTIFACT_SECRET"
-          zenml secret create mlflow_secret --username="$TRACKER_USER" --password="$TRACKER_PASSWORD"
-        
-          # Register artifact store
-          zenml artifact-store register Supabase -f s3 --path="$ARTIFACT_PATH" --authentication_secret=artifact_secrets
-
-          # Register experiment tracker referencing the secret
-          zenml experiment-tracker register mlflow_tracker --flavor=mlflow --authentication_secret=mlflow_secret
-
-          # Register and set stack
-          zenml stack register ci_stack -a Supabase -o default -e mlflow_tracker --set
-
-          # Install integrations
-          zenml integration install mlflow s3 -y
-
+          echo "🧪 Running tests..."
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
+
+          echo "🚀 Running training pipeline..."
           zenml stack set ci_stack
           python train.py
