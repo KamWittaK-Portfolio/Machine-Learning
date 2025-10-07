@@ -41,7 +41,8 @@ jobs:
 
           zenml secret create artifact_secrets --aws_access_key_id=${{ secrets.ARTIFACT_KEY }} --aws_secret_access_key=${{ secrets.ARTIFACT_SECRET }}
           zenml secret create mlflow_secret --username=${{ env.TRACKER_USER }} --password=${{ secrets.TRACKER_PASSWORD }}
-
+          
+          echo ${{ env.ARTIFACT_PATH }}
           zenml artifact-store register Supabase -f s3 --path=${{ env.ARTIFACT_PATH }} --authentication_secret=artifact_secrets
           zenml experiment-tracker register mlflow_tracker --flavor=mlflow --tracking_username={{mlflow_secret.username}} --tracking_password={{mlflow_secret.password}}
 
