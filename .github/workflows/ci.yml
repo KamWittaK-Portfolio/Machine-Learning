@@ -34,6 +34,7 @@ jobs:
           TRACKER_URL: ${{ vars.TRACKER_URL }}
           TRACKER_USER: ${{ vars.TRACKER_USER }}
           DB_URL: ${{ vars.DB_URL }}
+          ARTIFACT_URL: ${{ vars.ARTIFACT_URL }}
 
           ARTIFACT_KEY: ${{ secrets.ARTIFACT_KEY }}
           ARTIFACT_SECRET: ${{ secrets.ARTIFACT_SECRET }}
@@ -61,9 +62,7 @@ jobs:
           echo "::group::🗄️ Register ZenML Components"
           zenml artifact-store register Supabase \
             --flavor=s3 \
-            --path="$ARTIFACT_PATH" \
-            --authentication_secret=artifact_secrets 
-            
+            --path="$ARTIFACT_PATH" \            
 
           zenml experiment-tracker register mlflow_tracker \
             --flavor=mlflow \
