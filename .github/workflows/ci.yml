@@ -62,7 +62,7 @@ jobs:
           echo "::group::🗄️ Register ZenML Components"
           zenml artifact-store register Supabase \
             --flavor=s3 \
-            --path="$ARTIFACT_PATH" \            
+            --path="$ARTIFACT_PATH"            
 
           zenml experiment-tracker register mlflow_tracker \
             --flavor=mlflow \
