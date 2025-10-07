@@ -60,21 +60,18 @@ jobs:
           zenml artifact-store register Supabase \
             --flavor=s3 \
             --path="$ARTIFACT_PATH" \
-            --authentication_secret=artifact_secrets \
-            --overwrite
+            --authentication_secret=artifact_secrets 
 
           zenml experiment-tracker register mlflow_tracker \
             --flavor=mlflow \
-            --authentication_secret=mlflow_secret \
-            --overwrite
+            --authentication_secret=mlflow_secret
 
           echo "🧩 Registering ZenML stack..."
           zenml stack register ci_stack \
             -a Supabase \
             -o default \
             -e mlflow_tracker \
-            --set \
-            --overwrite
+            --set 
 
       - name: Run Tests and Training
         working-directory: "(3) K-Nearest Neighbors"
