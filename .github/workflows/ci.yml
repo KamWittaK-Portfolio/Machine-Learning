@@ -26,17 +26,36 @@ jobs:
           pip install -r requirements.txt
 
       - name: Initialize ZenML repo
+        env:
+          ARTIFACT_PATH: ${{ env.ARTIFACT_PATH }}
+          TRACKER_URL: ${{ env.TRACKER_URL }}
+          TRACKER_USER: ${{ env.TRACKER_USER }}
+
+          ARTIFACT_KEY: ${{ secrets.ARTIFACT_KEY }}
+          ARTIFACT_SECRET: ${{ secrets.ARTIFACT_SECRET }}
+          TRACKER_PASSWORD: ${{ secrets.TRACKER_PASSWORD }}
+          TRACKER_TOKEN: ${{ secrets.TRACKER_TOKEN }}
+
         run: |
           zenml init
+
+          zenml secret create artifact_secrets --aws_access_key_id=${{ secrets.ARTIFACT_KEY }} --aws_secret_access_key=${{ secrets.ARTIFACT_SECRET }}
+          zenml secret create mlflow_secret --username=${{ env.TRACKER_USER }} --password=${{ secrets.TRACKER_PASSWORD }}
+
+          zenml artifact-store register Supabase -f s3 --path=${{ env.ARTIFACT_PATH }} --authentication_secret=artifact_secrets
+          zenml experiment-tracker register mlflow_tracker --flavor=mlflow --tracking_username={{mlflow_secret.username}} --tracking_password={{mlflow_secret.password}}
+
           zenml experiment-tracker register mlflow_tracker --flavor=mlflow
-          zenml stack register ci_stack -a default -o default -e mlflow_tracker --set
+          zenml stack register ci_stack -a Supabase -o default -e mlflow_tracker --set
+
+          zenml integration install mlflow s3
       
 
       - name: Run unit and integration tests
         working-directory: "(3) K-Nearest Neighbors"
         env:
-          URL: ${{ secrets.URL }}
-          KEY: ${{ secrets.KEY }}
+          DB_URL: ${{ env.DB_URL }}
+          DB_KEY: ${{ secrets.DB_KEY }}
           PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
         run: |
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
