@@ -73,6 +73,8 @@ jobs:
             -e mlflow_tracker \
             --set 
 
+          python update_artifact.py
+
       - name: Run Tests and Training
         working-directory: "(3) K-Nearest Neighbors"
         env:
