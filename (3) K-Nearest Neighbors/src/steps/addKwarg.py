@@ -1,4 +1,4 @@
-import uuid
+import uuid, os
 from typing import Optional
 from dotenv import load_dotenv
 from zenml.client import Client
@@ -6,7 +6,7 @@ from zenml.models.v2.core.component import ComponentUpdate, ComponentFilter
 
 load_dotenv()
 
-def update_artifact_store_client_kwargs(new_client_kwargs: dict, *, store_name: Optional[str] = None, store_id: Optional[str] = None):
+def update_artifact_store_client_kwargs(store_name: Optional[str] = None):
     client = Client()
 
 
@@ -40,8 +40,13 @@ def update_artifact_store_client_kwargs(new_client_kwargs: dict, *, store_name: 
 
     # Merge client kwargs
     client_kwargs = current_config.get("client_kwargs") or {}
-    client_kwargs.update(new_client_kwargs)
-    current_config["client_kwargs"] = client_kwargs
+    client_kwargs.update({"endpoint_url": os.getenv("ARTIFACT_URL")})
+
+
+    current_config["client_kwargs"] = {"endpoint_url": os.getenv("ARTIFACT_URL")}
+    current_config["key"] = os.getenv("ARTIFACT_KEY")
+    current_config["secret"] = os.getenv("ARTIFACT_SECRET")
+    current_config["path"] = os.getenv("ARTIFACT_PATH")
 
     # Create a ComponentUpdate with the full preserved configuration
     component_update = ComponentUpdate(configuration=current_config)
