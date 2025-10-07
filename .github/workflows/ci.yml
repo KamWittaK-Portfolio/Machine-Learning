@@ -49,24 +49,13 @@ jobs:
           zenml init
           echo "::endgroup::"
 
-          echo "::group::🔐 Create ZenML Secrets"
-          zenml secret create artifact_secrets \
-            --aws_access_key_id="$ARTIFACT_KEY" \
-            --aws_secret_access_key="$ARTIFACT_SECRET"
-
-          zenml secret create mlflow_secret \
-            --username="$TRACKER_USER" \
-            --password="$TRACKER_PASSWORD"
-          echo "::endgroup::"
-
           echo "::group::🗄️ Register ZenML Components"
           zenml artifact-store register Supabase \
             --flavor=s3 \
             --path="$ARTIFACT_PATH"            
 
           zenml experiment-tracker register mlflow_tracker \
-            --flavor=mlflow \
-            --authentication_secret=mlflow_secret
+            --flavor=mlflow 
           echo "::endgroup::"
 
           echo "::group::🧩 Register ZenML Stack"
@@ -78,8 +67,9 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::📦 Update Artifact Store"
-          python update_artifact.py
+          python update_components.py
           zenml artifact-store describe  
+          zenml experiment-tracker describe mlflow_tracker
           echo "::endgroup::"
 
 
