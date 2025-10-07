@@ -9,5 +9,4 @@ from src.steps.preprocess import clean_scale
 @pipeline
 def training_pipeline():
     data = load_data()
-    x_train, x_test, y_train, y_test = clean_scale(data)
-    
+    x = clean_scale(data)
