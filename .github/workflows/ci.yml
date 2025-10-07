@@ -63,6 +63,7 @@ jobs:
             --flavor=s3 \
             --path="$ARTIFACT_PATH" \
             --authentication_secret=artifact_secrets 
+            
 
           zenml experiment-tracker register mlflow_tracker \
             --flavor=mlflow \
