@@ -79,6 +79,7 @@ jobs:
 
           echo "::group::📦 Update Artifact Store"
           python update_artifact.py
+          zenml artifact-store describe  
           echo "::endgroup::"
 
 
@@ -89,21 +90,6 @@ jobs:
           DB_KEY: ${{ secrets.DB_KEY }}
           PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
         run: |
-          # Check ARTIFACT_KEY
-          if [ "${{ secrets.ARTIFACT_KEY }}" = "6e0db8f4f23a07361f8a4d055f92087a" ]; then
-              echo "yes"
-          else
-              echo "no"
-          fi
-
-          # Check ARTIFACT_SECRET
-          if [ "${{ secrets.ARTIFACT_SECRET }}" = "7bd8322eeb966e95c2739603d974c4f74bee8cad1ad8c6a0ca6ff3d8528c0467" ]; then
-              echo "yes"
-          else
-              echo "no"
-          fi
-
-
           echo "🧪 Running tests..."
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
 
