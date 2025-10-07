@@ -87,3 +87,4 @@ jobs:
           echo "🚀 Running training pipeline..."
           zenml stack set ci_stack
           python train.py
+          
