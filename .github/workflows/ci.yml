@@ -26,6 +26,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Initialize ZenML repo
+        working-directory: "(3) K-Nearest Neighbors"
         env:
           ARTIFACT_PATH: ${{ vars.ARTIFACT_PATH }}
           TRACKER_URL: ${{ vars.TRACKER_URL }}
@@ -36,6 +37,9 @@ jobs:
           TRACKER_PASSWORD: ${{ secrets.TRACKER_PASSWORD }}
           TRACKER_TOKEN: ${{ secrets.TRACKER_TOKEN }}
 
+          DB_URL: ${{ vars.DB_URL }}
+          DB_KEY: ${{ secrets.DB_KEY }}
+          PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
         run: |
           zenml init
 
@@ -55,15 +59,6 @@ jobs:
           # Install integrations
           zenml integration install mlflow s3 -y
 
-      
-
-      - name: Run unit and integration tests
-        working-directory: "(3) K-Nearest Neighbors"
-        env:
-          DB_URL: ${{ vars.DB_URL }}
-          DB_KEY: ${{ secrets.DB_KEY }}
-          PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
-        run: |
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
           zenml stack set ci_stack
           python train.py
