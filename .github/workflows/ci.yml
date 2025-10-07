@@ -39,12 +39,6 @@ jobs:
         run: |
           zenml init
 
-          echo "ARTIFACT_PATH=$ARTIFACT_PATH"
-          echo "TRACKER_URL=$TRACKER_URL"
-          echo "TRACKER_USER=$TRACKER_USER"
-          echo "ARTIFACT_KEY=$ARTIFACT_KEY"
-          echo "ARTIFACT_SECRET=$ARTIFACT_SECRET"
-
           # Create secrets
           zenml secret create artifact_secrets --aws_access_key_id="$ARTIFACT_KEY" --aws_secret_access_key="$ARTIFACT_SECRET"
           zenml secret create mlflow_secret --username="$TRACKER_USER" --password="$TRACKER_PASSWORD"
@@ -71,3 +65,4 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
         run: |
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
+          python train.py
