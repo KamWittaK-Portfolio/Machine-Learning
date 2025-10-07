@@ -82,6 +82,7 @@ jobs:
         run: |
           echo "🧪 Running tests..."
           pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
+          pytest tests/test_preprocess.py --maxfail=1 --disable-warnings -q
 
           echo "🚀 Running training pipeline..."
           zenml stack set ci_stack

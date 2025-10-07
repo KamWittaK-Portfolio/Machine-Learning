@@ -25,3 +25,4 @@ def load_data() -> pd.DataFrame:
 
     # Combine CSV and Supabase data
     return pd.concat([df_csv, df_supabase], ignore_index=True)
+

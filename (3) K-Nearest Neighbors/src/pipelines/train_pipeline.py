@@ -1,8 +1,7 @@
 import os
 from zenml.pipelines import pipeline
 from src.steps.ingest import load_data
-#from src.steps.addKwarg import update_artifact_store_client_kwargs
-
+from src.steps.preprocess import clean_scale
 
 
 
@@ -10,3 +9,5 @@ from src.steps.ingest import load_data
 @pipeline
 def training_pipeline():
     data = load_data()
+    x_train, x_test, y_train, y_test = clean_scale(data)
+    

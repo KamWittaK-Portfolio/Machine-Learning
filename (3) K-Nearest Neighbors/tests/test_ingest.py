@@ -23,3 +23,4 @@ def test_ingest_schema():
     ]
 
     assert list(data.columns) == expected_columns, "❌ Columns do not match expected schema."
+    
