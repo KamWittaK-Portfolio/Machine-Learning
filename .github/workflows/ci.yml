@@ -6,8 +6,8 @@ on:
       - 'feat/**'          # Run on push for feature branches only
   pull_request:
     branches:
-      - 'dev'              # Run on PR merges targeting dev
-      - 'main'             # Run on PR merges targeting main
+      - 'Dev'              # Run on PR merges targeting dev
+      - 'Prod'             # Run on PR merges targeting main
 
 jobs:
   zenml-ci-cd:
