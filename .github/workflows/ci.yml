@@ -51,7 +51,7 @@ jobs:
           script: |
             cd /home/kam/Machine-Learning
             git fetch origin
-            git checkout main
-            git pull origin main
+            git checkout Prod
+            git pull origin Prod
             source venv/bin/activate
             zenml pipeline run pipeline.py
