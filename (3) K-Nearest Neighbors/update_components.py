@@ -1,6 +1,0 @@
-import os
-from src.steps.addKwarg import update_artifact_store_client_kwargs, update_tracking_server_credentials
-
-
-update_artifact_store_client_kwargs(store_name="Supabase")
-update_tracking_server_credentials(server_name="mlflow_tracker")

@@ -48,7 +48,7 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            cd /path/to/your/project
+            cd /Machine-Learning
             git fetch origin
             git checkout main
             git pull origin main
