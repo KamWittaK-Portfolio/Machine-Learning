@@ -33,6 +33,9 @@ jobs:
       # Step 4: Run unit tests (all branches)
       - name: Run Unit Tests
         working-directory: "(3) K-Nearest Neighbors"
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_KEY: ${{ secrets.DB_KEY }}
         run: pytest tests/ --maxfail=1 --disable-warnings
 
 
