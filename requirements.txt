@@ -5,6 +5,6 @@ pydantic
 python-dotenv
 SQLAlchemy
 zenml
-zenml[server]
 supabase
 pytest
+scikit-learn

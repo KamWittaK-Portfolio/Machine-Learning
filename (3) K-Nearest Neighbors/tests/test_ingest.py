@@ -1,12 +1,11 @@
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.steps.ingest import load_data
-import pandas as pd
+from src.steps.ingest import load_data_plain
 
 def test_ingest_schema():
     # Example: replace with your actual ingest function or load CSV
-    data = load_data()
+    data = load_data_plain()
 
     # Check basic sanity
     assert not data.empty, "❌ DataFrame is empty."
@@ -23,3 +22,4 @@ def test_ingest_schema():
     ]
 
     assert list(data.columns) == expected_columns, "❌ Columns do not match expected schema."
+    
