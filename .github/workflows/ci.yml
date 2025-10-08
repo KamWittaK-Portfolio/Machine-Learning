@@ -32,7 +32,9 @@ jobs:
 
       # Step 4: Run unit tests (all branches)
       - name: Run Unit Tests
+        working-directory: "(3) K-Nearest Neighbors"
         run: pytest tests/ --maxfail=1 --disable-warnings
+
 
       # Step 5: Run full production pipeline on main branch
       - name: Run Production Pipeline
