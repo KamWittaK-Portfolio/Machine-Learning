@@ -7,14 +7,13 @@ from typing import Any
 
 load_dotenv()
 
-@step
-def load_data() -> pd.DataFrame:
+def load_data_plain():
     # Load CSV file
     df_csv = pd.read_csv("data/KNNAlgorithmDataset.csv")
     
     # Load environment variables
-    URL: str = os.getenv("URL", "")
-    KEY: str = os.getenv("KEY", "")
+    URL: str = os.getenv("DB_URL", "")
+    KEY: str = os.getenv("DB_KEY", "")
 
     # Create Supabase client
     supabase: Client = create_client(URL, KEY)
@@ -25,3 +24,7 @@ def load_data() -> pd.DataFrame:
 
     # Combine CSV and Supabase data
     return pd.concat([df_csv, df_supabase], ignore_index=True)
+
+@step
+def load_data() -> pd.DataFrame:
+    return  load_data_plain()
