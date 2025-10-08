@@ -2,7 +2,6 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.steps.ingest import load_data_plain
-import pandas as pd
 
 def test_ingest_schema():
     # Example: replace with your actual ingest function or load CSV
