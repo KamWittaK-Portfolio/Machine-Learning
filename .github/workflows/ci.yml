@@ -3,9 +3,11 @@ name: ZenML CI/CD
 on:
   push:
     branches:
-      - 'feat/**'   # Feature branches
-      - 'dev'       # Dev branch
-      - 'main'      # Production branch
+      - 'feat/**'          # Run on push for feature branches only
+  pull_request:
+    branches:
+      - 'dev'              # Run on PR merges targeting dev
+      - 'main'             # Run on PR merges targeting main
 
 jobs:
   zenml-ci-cd:
@@ -30,7 +32,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run unit tests (all branches)
+      # Step 4: Run unit tests
       - name: Run Unit Tests
         working-directory: "(3) K-Nearest Neighbors"
         env:
@@ -38,10 +40,9 @@ jobs:
           DB_KEY: ${{ secrets.DB_KEY }}
         run: pytest tests/ --maxfail=1 --disable-warnings
 
-
-      # Step 5: Run full production pipeline on main branch
+      # Step 5: Run full production pipeline (only on merge to main)
       - name: Run Production Pipeline
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
