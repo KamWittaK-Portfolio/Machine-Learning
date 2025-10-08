@@ -7,9 +7,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.steps.ingest import load_data_plain
 from src.steps.preprocess import clean_scale_plain
 
-import pandas as pd
-import numpy as np
-
 def test_mean_var():
     # Create a small fake dataset for testing
     data = pd.DataFrame({
