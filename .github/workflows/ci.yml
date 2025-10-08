@@ -53,5 +53,5 @@ jobs:
             git fetch origin
             git checkout Prod
             git pull origin Prod
-            source venv/bin/activate
+            source ~/Machine-Learning/venv/bin/activate
             zenml pipeline run pipeline.py
