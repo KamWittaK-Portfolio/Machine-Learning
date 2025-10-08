@@ -42,7 +42,7 @@ jobs:
 
       # Step 5: Run full production pipeline (only on merge to main)
       - name: Run Production Pipeline
-        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        if: github.event_name == 'pull_request' && github.base_ref == 'Prod'
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
