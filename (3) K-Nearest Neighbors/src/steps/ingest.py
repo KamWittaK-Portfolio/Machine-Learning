@@ -7,8 +7,7 @@ from typing import Any
 
 load_dotenv()
 
-@step
-def load_data() -> pd.DataFrame:
+def load_data_plain():
     # Load CSV file
     df_csv = pd.read_csv("data/KNNAlgorithmDataset.csv")
     
@@ -26,3 +25,6 @@ def load_data() -> pd.DataFrame:
     # Combine CSV and Supabase data
     return pd.concat([df_csv, df_supabase], ignore_index=True)
 
+@step
+def load_data() -> pd.DataFrame:
+    return  load_data_plain()

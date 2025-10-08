@@ -2,10 +2,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from zenml.steps import step
-from src.steps.ingest import load_data
 
-@step
-def clean_scale(data: pd.DataFrame) -> list:
+
+def clean_scale_plain(data: pd.DataFrame) -> list:
     features = ['radius_mean', 'texture_mean', 'perimeter_mean',
        'area_mean', 'smoothness_mean', 'compactness_mean', 'concavity_mean',
        'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
@@ -26,5 +25,8 @@ def clean_scale(data: pd.DataFrame) -> list:
     x_train, x_test, y_train, t_test = train_test_split(scaled_features, data[result], train_size=0.8, random_state=42)
 
     return [x_train, x_test, y_train, t_test]
+   
 
-
+@step
+def clean_scale(data: pd.DataFrame) -> list:
+   return clean_scale_plain(data)

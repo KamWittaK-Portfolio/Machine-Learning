@@ -1,90 +1,51 @@
-name: CI - Development Branch Validation
+name: ZenML CI/CD
 
 on:
   push:
-    branches: [ Dev ]   # Trigger when code is merged into Dev
-  pull_request:
-    branches: [ Dev ]   # Optional: also runs on PRs targeting Dev
-  workflow_dispatch:     # Manual trigger
+    branches:
+      - 'feat/**'   # Feature branches
+      - 'dev'       # Dev branch
+      - 'main'      # Production branch
 
 jobs:
-  test:
+  zenml-ci-cd:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        shell: bash
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      # Step 2: Set up Python
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.12.4"
+          python-version: '3.11'
 
-      - name: Install dependencies
+      # Step 3: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          # Install ZenML integrations here so they exist before registration
-          zenml integration install mlflow s3 -y
+          pip install pytest
 
-      - name: Initialize and Configure ZenML
-        working-directory: "(3) K-Nearest Neighbors"
-        env:
-          ARTIFACT_PATH: ${{ vars.ARTIFACT_PATH }}
-          TRACKER_URL: ${{ vars.TRACKER_URL }}
-          TRACKER_USER: ${{ vars.TRACKER_USER }}
-          DB_URL: ${{ vars.DB_URL }}
-          ARTIFACT_URL: ${{ vars.ARTIFACT_URL }}
+      # Step 4: Run unit tests (all branches)
+      - name: Run Unit Tests
+        run: pytest tests/ --maxfail=1 --disable-warnings
 
-          ARTIFACT_KEY: ${{ secrets.ARTIFACT_KEY }}
-          ARTIFACT_SECRET: ${{ secrets.ARTIFACT_SECRET }}
-          TRACKER_PASSWORD: ${{ secrets.TRACKER_PASSWORD }}
-          TRACKER_TOKEN: ${{ secrets.TRACKER_TOKEN }}
-          DB_KEY: ${{ secrets.DB_KEY }}
-
-          PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
-
-        run: |
-          echo "::group::🔧 Initialize ZenML Repository"
-          zenml init
-          echo "::endgroup::"
-
-          echo "::group::🗄️ Register ZenML Components"
-          zenml artifact-store register Supabase \
-            --flavor=s3 \
-            --path="$ARTIFACT_PATH"            
-
-          zenml experiment-tracker register mlflow_tracker \
-            --flavor=mlflow 
-          echo "::endgroup::"
-
-          echo "::group::🧩 Register ZenML Stack"
-          zenml stack register ci_stack \
-            -a Supabase \
-            -o default \
-            -e mlflow_tracker \
-            --set 
-          echo "::endgroup::"
-
-          echo "::group::📦 Update Artifact Store"
-          python update_components.py
-          zenml artifact-store describe  
-          zenml experiment-tracker describe mlflow_tracker
-          echo "::endgroup::"
-
-
-      - name: Run Tests and Training
-        working-directory: "(3) K-Nearest Neighbors"
-        env:
-          DB_URL: ${{ vars.DB_URL }}
-          DB_KEY: ${{ secrets.DB_KEY }}
-          PYTHONPATH: ${{ github.workspace }}/(3) K-Nearest Neighbors
-        run: |
-          echo "🧪 Running tests..."
-          pytest tests/test_ingest.py --maxfail=1 --disable-warnings -q
-          pytest tests/test_preprocess.py --maxfail=1 --disable-warnings -q
-
-          echo "🚀 Running training pipeline..."
-          zenml stack set ci_stack
-          python train.py
-          
+      # Step 5: Run full production pipeline on main branch
+      - name: Run Production Pipeline
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_SERVER_IP }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /path/to/your/project
+            git fetch origin
+            git checkout main
+            git pull origin main
+            source venv/bin/activate
+            zenml pipeline run pipeline.py
