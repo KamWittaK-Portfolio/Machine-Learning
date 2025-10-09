@@ -54,4 +54,4 @@ jobs:
             git checkout Prod
             git pull origin Prod
             source venv/bin/activate
-            pythhon3 run.py
+            python3 run.py
