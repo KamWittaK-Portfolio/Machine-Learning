@@ -42,16 +42,17 @@ jobs:
 
       # Step 5: Run full production pipeline (only on merge to main)
       - name: Run Production Pipeline
-        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        if: github.event_name == 'pull_request' && github.base_ref == 'Prod'
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            cd /Machine-Learning
+            cd /home/kam/Machine-Learning
             git fetch origin
-            git checkout main
-            git pull origin main
+            git checkout Prod
+            git pull origin Prod
             source venv/bin/activate
-            zenml pipeline run pipeline.py
+            cd '(3) K-Nearest Neighbors'
+            python3 run.py
