@@ -54,4 +54,5 @@ jobs:
             git checkout Prod
             git pull origin Prod
             source venv/bin/activate
+            cd '(3) K-Nearest Neighbors'
             python3 run.py
