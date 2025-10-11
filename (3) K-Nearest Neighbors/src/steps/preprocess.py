@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 from zenml.steps import step
 
 
-def clean_scale_plain(data: pd.DataFrame) -> list:
+def clean_scale_plain(data: pd.DataFrame):
     features = ['radius_mean', 'texture_mean', 'perimeter_mean',
        'area_mean', 'smoothness_mean', 'compactness_mean', 'concavity_mean',
        'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
@@ -17,16 +17,18 @@ def clean_scale_plain(data: pd.DataFrame) -> list:
     
     result = "diagnosis"
 
+    data[result] = data[result].map({"M": 1, "B": 0})
+
     scale = StandardScaler()
 
     scaled_features = scale.fit_transform(data[features])
 
 
-    x_train, x_test, y_train, t_test = train_test_split(scaled_features, data[result], train_size=0.8, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(scaled_features, data[result], train_size=0.8, random_state=42)
 
-    return [x_train, x_test, y_train, t_test]
+    return x_train, x_test, y_train, y_test
    
 
 @step
-def clean_scale(data: pd.DataFrame) -> list:
+def clean_scale(data: pd.DataFrame):
    return clean_scale_plain(data)
