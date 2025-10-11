@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/194837891624246181/ac69869fa7b34f5fab40d72f8b142953/artifacts
+end_time: 1760158221589
+entry_point_name: ''
+experiment_id: '194837891624246181'
+lifecycle_stage: active
+run_id: ac69869fa7b34f5fab40d72f8b142953
+run_name: big-trout-346
+run_uuid: ac69869fa7b34f5fab40d72f8b142953
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760158218616
+status: 3
+tags: []
+user_id: Kamer

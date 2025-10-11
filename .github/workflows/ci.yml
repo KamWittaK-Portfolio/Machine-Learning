@@ -6,7 +6,6 @@ on:
       - 'feat/**'          # Run on push for feature branches only
   pull_request:
     branches:
-      - 'Dev'              # Run on PR merges targeting dev
       - 'Prod'             # Run on PR merges targeting main
 
 jobs:
