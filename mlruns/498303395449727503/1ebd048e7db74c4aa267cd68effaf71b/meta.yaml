@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/Kamer/Desktop/Machine Leanring/mlruns/498303395449727503/1ebd048e7db74c4aa267cd68effaf71b/artifacts
+end_time: 1760156771842
+entry_point_name: ''
+experiment_id: '498303395449727503'
+lifecycle_stage: active
+run_id: 1ebd048e7db74c4aa267cd68effaf71b
+run_name: KNN Evaluation
+run_uuid: 1ebd048e7db74c4aa267cd68effaf71b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760156768937
+status: 3
+tags: []
+user_id: Kamer

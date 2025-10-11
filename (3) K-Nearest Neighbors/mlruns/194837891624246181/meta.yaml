@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/194837891624246181
+creation_time: 1760158216432
+experiment_id: '194837891624246181'
+last_update_time: 1760158216432
+lifecycle_stage: active
+name: KNN_Classification
