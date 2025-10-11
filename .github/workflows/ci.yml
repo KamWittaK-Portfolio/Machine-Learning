@@ -54,5 +54,6 @@ jobs:
             git checkout Prod
             git pull origin Prod
             source venv/bin/activate
+            zenml stack set ml_stack
             cd '(3) K-Nearest Neighbors'
             python3 run.py
