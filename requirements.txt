@@ -8,3 +8,4 @@ zenml
 supabase
 pytest
 scikit-learn
+mlflow
