@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/Kamer/Desktop/Machine Leanring/mlruns/498303395449727503/27ea01f338634c85b0f6070067837b63/artifacts
+end_time: 1760157604771
+entry_point_name: ''
+experiment_id: '498303395449727503'
+lifecycle_stage: active
+run_id: 27ea01f338634c85b0f6070067837b63
+run_name: persistent-stork-90
+run_uuid: 27ea01f338634c85b0f6070067837b63
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760157601905
+status: 3
+tags: []
+user_id: Kamer
