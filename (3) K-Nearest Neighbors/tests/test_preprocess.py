@@ -4,7 +4,7 @@ import numpy as np
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.steps.preprocess import clean_scale_plain
+from steps.preprocess import clean_scale_plain
 
 def test_mean_var():
     # Create a small fake dataset for testing
