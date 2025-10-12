@@ -3,8 +3,10 @@ name: ZenML CI/CD
 on:
   push:
     branches:
-      - 'feat/**'       # Run on push for feature branches
-      - 'Prod'          # Run when code is merged into Prod
+      - 'Prod'      # Run full pipeline on Prod branch
+  pull_request:
+    branches:
+      - 'Dev'       # Run CI for PRs to Dev branch
 
 jobs:
   zenml-ci-cd:
@@ -18,28 +20,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python
+      # Step 2: Set up Python (Dev only)
       - name: Set up Python 3.11
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Dev'
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      # Step 3: Install dependencies
+      # Step 3: Install dependencies (Dev only)
       - name: Install Dependencies
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Dev'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run unit tests (for feature branches)
+      # Step 4: Run unit tests (Dev only)
       - name: Run Unit Tests
-        if: startsWith(github.ref, 'refs/heads/feat/')
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Dev'
         working-directory: "(3) K-Nearest Neighbors"
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_KEY: ${{ secrets.DB_KEY }}
         run: pytest tests/ --maxfail=1 --disable-warnings
 
-      # Step 5: Run full production pipeline (only after merge to Prod)
+      # Step 5: Run full production pipeline (Prod only)
       - name: Run Production Pipeline
         if: github.ref == 'refs/heads/Prod'
         uses: appleboy/ssh-action@v0.1.7
