@@ -22,21 +22,21 @@ jobs:
 
       # Step 2: Set up Python (Dev only)
       - name: Set up Python 3.11
-        if: github.ref == 'refs/heads/Dev'
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Dev'
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
       # Step 3: Install dependencies (Dev only)
       - name: Install Dependencies
-        if: github.ref == 'refs/heads/Dev'
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Dev'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       # Step 4: Run unit tests (Dev only)
       - name: Run Unit Tests
-        if: github.ref == 'refs/heads/Dev'
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Dev'
         working-directory: "(3) K-Nearest Neighbors"
         env:
           DB_URL: ${{ secrets.DB_URL }}
@@ -61,5 +61,3 @@ jobs:
             zenml stack set ml_stack
             cd '(3) K-Nearest Neighbors'
             python3 run.py
-
-            
