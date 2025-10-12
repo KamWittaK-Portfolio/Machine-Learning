@@ -57,9 +57,9 @@ Test coverage includes:
 
 This project uses **GitHub Actions** to automate testing and deployment through a structured CI/CD pipeline.
 
-- **Feature Branch Workflow** (`feat/**`)
+- **Development Branch Workflow** (`Dev`)
 
-   When code is pushed to a feature branch, GitHub Actions automatically:
+   After a pull request from a feature branch, GitHub Actions automatically:
 
    1. Installs dependencies
 
@@ -67,7 +67,7 @@ This project uses **GitHub Actions** to automate testing and deployment through 
 
    3. Validates that the pipeline components execute correctly before merging
 
-- **Production Deployment (`Prod` branch)**
+- **Production Deployment (`Prod`)**
    
    After a pull request merges into the Prod branch, the workflow:
 
