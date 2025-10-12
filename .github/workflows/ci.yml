@@ -3,10 +3,8 @@ name: ZenML CI/CD
 on:
   push:
     branches:
-      - 'feat/**'          # Run on push for feature branches only
-  pull_request:
-    branches:
-      - 'Prod'             # Run on PR merges targeting main
+      - 'feat/**'       # Run on push for feature branches
+      - 'Prod'          # Run when code is merged into Prod
 
 jobs:
   zenml-ci-cd:
@@ -14,6 +12,7 @@ jobs:
     defaults:
       run:
         shell: bash
+
     steps:
       # Step 1: Checkout code
       - name: Checkout Repository
@@ -31,17 +30,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run unit tests
+      # Step 4: Run unit tests (for feature branches)
       - name: Run Unit Tests
+        if: startsWith(github.ref, 'refs/heads/feat/')
         working-directory: "(3) K-Nearest Neighbors"
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_KEY: ${{ secrets.DB_KEY }}
         run: pytest tests/ --maxfail=1 --disable-warnings
 
-      # Step 5: Run full production pipeline (only on merge to main)
+      # Step 5: Run full production pipeline (only after merge to Prod)
       - name: Run Production Pipeline
-        if: github.event_name == 'pull_request' && github.base_ref == 'Prod'
+        if: github.ref == 'refs/heads/Prod'
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
@@ -57,4 +57,3 @@ jobs:
             zenml stack set ml_stack
             cd '(3) K-Nearest Neighbors'
             python3 run.py
-            
