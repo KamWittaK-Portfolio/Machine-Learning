@@ -1,10 +1,12 @@
 name: ZenML CI/CD
 
 on:
+  push:
+    branches:
+      - 'Prod'      # Optional: Run CI for pushes to Prod branch
   pull_request:
     branches:
       - 'Dev'       # Run CI for PRs to Dev branch
-      - 'Prod'      # Optional: Run CI for PRs to Prod branch
 
 jobs:
   zenml-ci-cd:
