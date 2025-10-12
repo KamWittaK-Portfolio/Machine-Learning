@@ -17,20 +17,19 @@ The entire workflow runs on **Azure virtual machines**, leveraging cloud compute
 
 ## 🧰 Tech Stack
 
----
 | Category | Technology |
 |-----------|-------------|
-| Language | Python 3.12 |
-| Compute Environment | Azure Virtual Machine |
-| Pipeline Orchestration | ZenML |
-| Experiment Tracking | MLflow |
-| Artifact Storage | Supabase |
-| Machine Learning | scikit-learn (KNN algorithm) | 
-| Data Handling | pandas, numpy | 
-| Testing | pytest |
-| Environment Management| .env file (dotenv) |
-| Logging | Python logging + ZenML/MLflow |
-| Serialization | Pickle for saving models |
+| **Language** | Python 3.12 |
+| **Compute Environment** | Azure Virtual Machine |
+| **Pipeline Orchestration** | ZenML |
+| **Experiment Tracking** | MLflow |
+| **Artifact Storage** | Supabase |
+| **Machine Learning** | scikit-learn (KNN algorithm) | 
+| **Data Handling** | pandas, numpy | 
+| **Testing** | pytest |
+| **Environment Management** | .env file (dotenv) |
+| **Logging** | Python logging + ZenML/MLflow |
+| **Serialization** | Pickle for saving models |
 ---
 
 ## 🧩 Pipeline Architecture
@@ -45,40 +44,7 @@ Each step of the pipeline is defined as a ZenML step:
 | **Evaluate** | `src/steps/evaluate.py` | Evaluates model performance and logs metrics. |
 | **Pipeline Definition** | `src/pipelines/train_pipeline.py` | Connects all steps into one reproducible pipeline. |
 
-
-## ⚙️ How It Works
-
-1. **Run the pipeline**
-   ```bash
-   python run.py
-   ```
-   This triggers the ZenML pipeline defined in `src/pipelines/train_pipeline.py`.
-
-2. **Track experiments**
-   - MLflow logs are automatically created under `/mlruns`.
-   - Run the MLflow UI to view metrics and models:
-     ```bash
-     mlflow ui
-     ```
-     Access it via `http://localhost:5000`.
-
-3. **Evaluate performance**
-   - Evaluation results (e.g., accuracy) are stored in the MLflow run’s metrics directory.
-   - You can compare different pipeline runs visually in the MLflow dashboard.
-
-4. **Reproduce runs**
-   - All pipeline steps are versioned.
-   - Each run’s metadata (model, parameters, and metrics) is stored under `mlartifacts/`.
-
----
-
 ## 🧪 Testing
-
-Run all unit tests to validate each step:
-
-```bash
-pytest
-```
 
 Test coverage includes:
 - `test_ingest.py` — Verifies dataset loading.
@@ -87,30 +53,33 @@ Test coverage includes:
 
 ---
 
-## 🧵 Folder Structure
+## ⚙️ Continuous Integration & Deployment (CI/CD)
 
-```
-(3) K-Nearest Neighbors/
-│
-├── run.py                          # Entry point for running the pipeline
-├── .env                            # Environment configuration
-├── data/
-│   └── KNNAlgorithmDataset.csv      # Input dataset
-│
-├── src/
-│   ├── pipelines/
-│   │   └── train_pipeline.py        # ZenML pipeline definition
-│   └── steps/
-│       ├── ingest.py
-│       ├── preprocess.py
-│       ├── train.py
-│       └── evaluate.py
-│
-├── tests/                          # Unit tests for each pipeline step
-├── mlruns/                         # MLflow tracking directory
-├── mlartifacts/                    # MLflow artifact store
-└── .zen/                           # ZenML configuration
-```
+This project uses **GitHub Actions** to automate testing and deployment through a structured CI/CD pipeline.
+
+- **Feature Branch Workflow** (`feat/**`)
+
+   When code is pushed to a feature branch, GitHub Actions automatically:
+
+   1. Installs dependencies
+
+   2. Runs unit tests inside the project directory
+
+   3. Validates that the pipeline components execute correctly before merging
+
+- **Production Deployment (`Prod` branch)**
+   
+   After a pull request merges into the Prod branch, the workflow:
+
+   1. Connects to the remote production server via SSH
+
+   2. Pulls the latest production code
+
+   3. Activates the virtual environment and ZenML stack
+
+   4. Executes the full **production pipeline** (`run.py`) end to end
+
+This ensures a fully automated transition from **development** → **testing** → **production**, improving consistency, reproducibility, and deployment reliability.
 
 ---
 
@@ -124,18 +93,6 @@ The project seamlessly combines:
 - ZenML — orchestrates all steps and manages pipeline logic.
 - You can deploy MLflow with Docker for local or cloud tracking:
 
-You can serve MLflow via Docker:
-
-```bash
-sudo docker run -d -p 5000:5000 \
-  -v "$(pwd)/mlruns:/mlruns" \
-  ghcr.io/mlflow/mlflow \
-  mlflow server \
-  --backend-store-uri sqlite:///mlflow.db \
-  --default-artifact-root /mlruns \
-  --host 0.0.0.0
-```
-
 ---
 
 ## 🧠 Model Details
@@ -147,15 +104,3 @@ sudo docker run -d -p 5000:5000 \
 - **Environment:** Defined in `python_env.yaml` for reproducibility
 
 ---
-
-## 🚀 Future Enhancements
-
-- Add hyperparameter optimization for K values
-- Deploy trained models with FastAPI and Docker
-
----
-
-## 👤 Author
-
-**Kameron Fournillier**  
-Machine Learning Developer  
