@@ -3,7 +3,7 @@ name: ZenML CI/CD
 on:
   push:
     branches:
-      - 'Prod'      # Run full pipeline on Prod branch
+      - 'Prod'      # Optional: Run CI for pushes to Prod branch
   pull_request:
     branches:
       - 'Dev'       # Run CI for PRs to Dev branch
@@ -45,7 +45,7 @@ jobs:
 
       # Step 5: Run full production pipeline (Prod only)
       - name: Run Production Pipeline
-        if: github.ref == 'refs/heads/Prod'
+        if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Prod'
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.PROD_SERVER_IP }}
